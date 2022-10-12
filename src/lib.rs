@@ -52,17 +52,30 @@ mod tests {
     use super::*;
 
     #[test]
-    fn it_wo2rks() -> TestResult {
-        let result = 2 + 2;
-        assert_eq!(result, 4);
+    #[ignore] // ignored test must still compile
+              // this checks whether conversion from all errors is accomplished
+    fn compilation_works() -> TestResult {
+        std::fs::File::open("this-file-does-not-exist")?;
         Ok(())
     }
 
     #[test]
-    #[ignore] // ignored test must still compile
-              // this checks whether conversion from all errors is accomplished
-    fn it_works_too() -> TestResult {
-        std::fs::File::open("this-file-does-not-exist")?;
+    fn check_if_panics() -> TestResult {
+        let result = std::panic::catch_unwind(|| {
+            fn test_fn() -> TestResult {
+                std::fs::File::open("this-file-does-not-exist")?;
+                Ok(())
+            }
+            let _ = test_fn();
+        });
+        assert!(result.is_err());
+        Ok(())
+    }
+
+    #[test]
+    fn text_prints() -> TestResult {
+        let text = format!("{}", ErrorWithStacktrace);
+        assert!(!text.is_empty());
         Ok(())
     }
 }
