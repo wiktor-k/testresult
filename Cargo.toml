@@ -1,0 +1,13 @@
+[package]
+name = "testresult"
+version = "0.1.0"
+edition = "2021"
+authors = ["Wiktor Kwapisiewicz <wiktor@metacode.biz>"]
+description = "Provides TestResult type for concise and precise test failures"
+repository = "https://github.com/wiktor-k/testresult"
+license = "MIT OR Apache-2.0"
+keywords = ["testing"]
+categories = ["development-tools::testing"]
+exclude = [".github"]
+
+[dependencies]
