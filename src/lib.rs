@@ -1,6 +1,6 @@
 #![doc = include_str!("../README.md")]
 #![deny(missing_debug_implementations)]
-//#![deny(missing_docs)]
+#![deny(missing_docs)]
 
 /// Error with stacktrace
 ///
