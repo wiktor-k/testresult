@@ -73,8 +73,8 @@ Running it again with `RUST_BACKTRACE=1 cargo test` shows more details:
 
 ```text
 ---- tests::it_works stdout ----
-thread 'tests::it_works' panicked at 'Error: No such file or directory (os error 2)', src/lib.rs:10:9
-  ...
+thread 'tests::it_works' panicked at 'error: std::io::error::Error - No such file or directory (os error 2)', src/lib.rs:53:9
+  ...                                                                                                              ^^^^^^^^^^^^^^^
    3: <core::result::Result<T,F> as core::ops::try_trait::FromResidual<core::result::Result<core::convert::Infallible,E>>>::from_residual
              at /rustc/4b91a6ea7258a947e59c6522cd5898e7c0a6a88f/library/core/src/result.rs:2125:27
    4: testresult::tests::it_works
@@ -87,7 +87,10 @@ thread 'tests::it_works' panicked at 'Error: No such file or directory (os error
 note: Some details are omitted, run with `RUST_BACKTRACE=full` for a verbose backtrace.
 ```
 
+Note that the error location is now in the backtrace and also in the test failure message. This means that we don't
+even need the backtrace to know where the error happened.
+
 The advantages of using `TestResult`:
-  - exact failure line is present in the backtrace,
-  - the underlying error message is present in the test failure,
+  - exact failure line is present in the test failure and the backtrace,
+  - the underlying error type and message are present in the test failure,
   - the signature of the test result is simpler.
