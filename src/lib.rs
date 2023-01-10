@@ -7,20 +7,15 @@
 /// Any other type of error can be converted to this one but the
 /// conversion will always panic.
 ///
-/// This type is useful only in unit tests.
+/// This type is useful only in the result of unit tests and cannot be instantiated.
 #[derive(Debug)]
 #[doc(hidden)]
-pub struct ErrorWithStacktrace;
+pub enum ErrorWithStacktrace {}
 
-impl<T: std::error::Error> From<T> for ErrorWithStacktrace {
+impl<T: std::fmt::Display> From<T> for ErrorWithStacktrace {
+    #[track_caller] // Will show the location of the caller in test failure messages
     fn from(error: T) -> Self {
-        panic!("Error: {}", error);
-    }
-}
-
-impl std::fmt::Display for ErrorWithStacktrace {
-    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        write!(f, "This is an error with stacktrace")
+        panic!("error: {} - {}", std::any::type_name::<T>(), error);
     }
 }
 
@@ -38,10 +33,10 @@ impl std::fmt::Display for ErrorWithStacktrace {
 ///
 /// #[test]
 /// fn it_works() -> TestResult {
-///   // ...
-///    std::fs::File::open("this-file-does-not-exist")?;
-///    // ...
-///    Ok(())
+///     // ...
+///     std::fs::File::open("this-file-does-not-exist")?;
+///     // ...
+///     Ok(())
 /// }
 /// ```
 
@@ -69,13 +64,6 @@ mod tests {
             let _ = test_fn();
         });
         assert!(result.is_err());
-        Ok(())
-    }
-
-    #[test]
-    fn text_prints() -> TestResult {
-        let text = format!("{}", ErrorWithStacktrace);
-        assert!(!text.is_empty());
         Ok(())
     }
 }
