@@ -10,9 +10,9 @@
 /// This type is useful only in the result of unit tests and cannot be instantiated.
 #[derive(Debug)]
 #[doc(hidden)]
-pub enum ErrorWithStacktrace {}
+pub enum TestError {}
 
-impl<T: std::fmt::Display> From<T> for ErrorWithStacktrace {
+impl<T: std::fmt::Display> From<T> for TestError {
     #[track_caller] // Will show the location of the caller in test failure messages
     fn from(error: T) -> Self {
         panic!("error: {} - {}", std::any::type_name::<T>(), error);
@@ -39,8 +39,7 @@ impl<T: std::fmt::Display> From<T> for ErrorWithStacktrace {
 ///     Ok(())
 /// }
 /// ```
-
-pub type TestResult = std::result::Result<(), ErrorWithStacktrace>;
+pub type TestResult = std::result::Result<(), TestError>;
 
 #[cfg(test)]
 mod tests {
