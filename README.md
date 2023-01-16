@@ -94,3 +94,7 @@ The advantages of using `TestResult`:
   - exact failure line is present in the test failure and the backtrace,
   - the underlying error type and message are present in the test failure,
   - the signature of the test result is simpler.
+
+For a more elaborate description see ["Improving failure messages in Rust tests returning a Result"][IMPROV].
+
+[IMPROV]: https://bluxte.net/musings/2023/01/08/improving_failure_messages_rust_tests/
