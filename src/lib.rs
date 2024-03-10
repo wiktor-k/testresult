@@ -19,6 +19,7 @@ impl<T: std::fmt::Display> From<T> for TestError {
     }
 }
 
+#[allow(clippy::test_attr_in_doctest)] // the docs illustrate the usage in test functions
 /// Unit test result
 ///
 /// This type allows panicking when encountering any type of
