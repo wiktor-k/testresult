@@ -11,3 +11,6 @@ categories = ["development-tools::testing"]
 exclude = [".github"]
 
 [dependencies]
+
+[dev-dependencies]
+rstest = "0.18.2"
