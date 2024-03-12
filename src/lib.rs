@@ -15,7 +15,9 @@ pub enum TestError {}
 impl<T: std::fmt::Display> From<T> for TestError {
     #[track_caller] // Will show the location of the caller in test failure messages
     fn from(error: T) -> Self {
-        panic!("error: {} - {}", std::any::type_name::<T>(), error);
+        // Use alternate format for rich error message for anyhow
+        // See: https://docs.rs/anyhow/latest/anyhow/struct.Error.html#display-representations
+        panic!("error: {} - {:#}", std::any::type_name::<T>(), error);
     }
 }
 
@@ -71,6 +73,7 @@ pub type TestResult<T = ()> = std::result::Result<T, TestError>;
 #[cfg(test)]
 mod tests {
     use super::*;
+    use anyhow::Context as _;
 
     #[test]
     #[ignore] // ignored test must still compile
@@ -81,9 +84,9 @@ mod tests {
     }
 
     // helper function which always fails
-    fn test_fn() -> TestResult<std::fs::File> {
-        let file = std::fs::File::open("this-file-does-not-exist")?;
-        Ok(file)
+    fn test_fn() -> TestResult<String> {
+        let string = String::from_utf8(vec![0, 159, 146, 150])?;
+        Ok(string)
     }
 
     #[test]
@@ -92,6 +95,48 @@ mod tests {
             let _ = test_fn();
         });
         assert!(result.is_err());
+
+        let err = result.unwrap_err();
+        assert_eq!(
+            Some(
+                &"error: alloc::string::FromUtf8Error - invalid utf-8 sequence of 1 bytes from index 1"
+                    .to_string()
+            ),
+            err.downcast_ref::<String>()
+        );
+        Ok(())
+    }
+
+    fn anyhow_a() -> anyhow::Result<String> {
+        let string = String::from_utf8(vec![0, 159, 146, 150])?;
+        Ok(string)
+    }
+
+    fn anyhow_b() -> anyhow::Result<String> {
+        let file = anyhow_a().context("Parsing a string")?;
+        Ok(file)
+    }
+
+    fn anyhow_c() -> TestResult<String> {
+        let file = anyhow_b()?;
+        Ok(file)
+    }
+
+    #[test]
+    fn check_if_anyhow_panics() -> TestResult {
+        let result = std::panic::catch_unwind(|| {
+            let _ = anyhow_c();
+        });
+        assert!(result.is_err());
+
+        let err = result.unwrap_err();
+        assert_eq!(
+            Some(
+                &"error: anyhow::Error - Parsing a string: invalid utf-8 sequence of 1 bytes from index 1"
+                    .to_string()
+            ),
+            err.downcast_ref::<String>()
+        );
         Ok(())
     }
 }
