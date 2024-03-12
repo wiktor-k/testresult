@@ -15,7 +15,9 @@ pub enum TestError {}
 impl<T: std::fmt::Display> From<T> for TestError {
     #[track_caller] // Will show the location of the caller in test failure messages
     fn from(error: T) -> Self {
-        panic!("error: {} - {}", std::any::type_name::<T>(), error);
+        // Use alternate format for rich error message for anyhow
+        // See: https://docs.rs/anyhow/latest/anyhow/struct.Error.html#display-representations
+        panic!("error: {} - {:#}", std::any::type_name::<T>(), error);
     }
 }
 
@@ -71,6 +73,8 @@ pub type TestResult<T = ()> = std::result::Result<T, TestError>;
 #[cfg(test)]
 mod tests {
     use super::*;
+    use anyhow::Context as _;
+    use std::fs::File;
 
     #[test]
     #[ignore] // ignored test must still compile
@@ -81,8 +85,8 @@ mod tests {
     }
 
     // helper function which always fails
-    fn test_fn() -> TestResult<std::fs::File> {
-        let file = std::fs::File::open("this-file-does-not-exist")?;
+    fn test_fn() -> TestResult<File> {
+        let file = File::open("this-file-does-not-exist")?;
         Ok(file)
     }
 
@@ -92,6 +96,48 @@ mod tests {
             let _ = test_fn();
         });
         assert!(result.is_err());
+
+        let err = result.unwrap_err();
+        assert_eq!(
+            Some(
+                &"error: std::io::error::Error - No such file or directory (os error 2)"
+                    .to_string()
+            ),
+            err.downcast_ref::<String>()
+        );
+        Ok(())
+    }
+
+    fn anyhow_a() -> anyhow::Result<File> {
+        let file = std::fs::File::open("this-file-does-not-exist")?;
+        Ok(file)
+    }
+
+    fn anyhow_b() -> anyhow::Result<File> {
+        let file = anyhow_a().context("Reading a file")?;
+        Ok(file)
+    }
+
+    fn anyhow_c() -> TestResult<File> {
+        let file = anyhow_b()?;
+        Ok(file)
+    }
+
+    #[test]
+    fn check_if_anyhow_panics() -> TestResult {
+        let result = std::panic::catch_unwind(|| {
+            let _ = anyhow_c();
+        });
+        assert!(result.is_err());
+
+        let err = result.unwrap_err();
+        assert_eq!(
+            Some(
+                &"error: anyhow::Error - Reading a file: No such file or directory (os error 2)"
+                    .to_string()
+            ),
+            err.downcast_ref::<String>()
+        );
         Ok(())
     }
 }
