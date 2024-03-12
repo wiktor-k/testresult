@@ -74,7 +74,6 @@ pub type TestResult<T = ()> = std::result::Result<T, TestError>;
 mod tests {
     use super::*;
     use anyhow::Context as _;
-    use std::fs::File;
 
     #[test]
     #[ignore] // ignored test must still compile
@@ -85,9 +84,9 @@ mod tests {
     }
 
     // helper function which always fails
-    fn test_fn() -> TestResult<File> {
-        let file = File::open("this-file-does-not-exist")?;
-        Ok(file)
+    fn test_fn() -> TestResult<String> {
+        let string = String::from_utf8(vec![0, 159, 146, 150])?;
+        Ok(string)
     }
 
     #[test]
@@ -100,7 +99,7 @@ mod tests {
         let err = result.unwrap_err();
         assert_eq!(
             Some(
-                &"error: std::io::error::Error - No such file or directory (os error 2)"
+                &"error: alloc::string::FromUtf8Error - invalid utf-8 sequence of 1 bytes from index 1"
                     .to_string()
             ),
             err.downcast_ref::<String>()
@@ -108,17 +107,17 @@ mod tests {
         Ok(())
     }
 
-    fn anyhow_a() -> anyhow::Result<File> {
-        let file = std::fs::File::open("this-file-does-not-exist")?;
+    fn anyhow_a() -> anyhow::Result<String> {
+        let string = String::from_utf8(vec![0, 159, 146, 150])?;
+        Ok(string)
+    }
+
+    fn anyhow_b() -> anyhow::Result<String> {
+        let file = anyhow_a().context("Parsing a string")?;
         Ok(file)
     }
 
-    fn anyhow_b() -> anyhow::Result<File> {
-        let file = anyhow_a().context("Reading a file")?;
-        Ok(file)
-    }
-
-    fn anyhow_c() -> TestResult<File> {
+    fn anyhow_c() -> TestResult<String> {
         let file = anyhow_b()?;
         Ok(file)
     }
@@ -133,7 +132,7 @@ mod tests {
         let err = result.unwrap_err();
         assert_eq!(
             Some(
-                &"error: anyhow::Error - Reading a file: No such file or directory (os error 2)"
+                &"error: anyhow::Error - Parsing a string: invalid utf-8 sequence of 1 bytes from index 1"
                     .to_string()
             ),
             err.downcast_ref::<String>()
