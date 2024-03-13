@@ -9,6 +9,10 @@ Provides `TestResult` type that can be used in tests to avoid
 `unwrap`s but at the same time to have precise stacktraces with the
 point of failure clearly written.
 
+It's like a lean [`anyhow`](https://crates.io/crates/anyhow) for tests!
+
+## Details
+
 Consider the following code. It uses `unwrap` so the test failure
 stacktrace will informative. Unfortunately it's not as concise as it
 could be:
@@ -87,3 +91,19 @@ The advantages of using `TestResult`:
 For a more elaborate description see ["Improving failure messages in Rust tests returning a Result"][IMPROV].
 
 [IMPROV]: https://bluxte.net/musings/2023/01/08/improving_failure_messages_rust_tests/
+
+## License
+
+This project is licensed under either of:
+
+  - [Apache License, Version 2.0](https://www.apache.org/licenses/LICENSE-2.0),
+  - [MIT license](https://opensource.org/licenses/MIT).
+
+at your option.
+
+### Contribution
+
+Unless you explicitly state otherwise, any contribution intentionally
+submitted for inclusion in this crate by you, as defined in the
+Apache-2.0 license, shall be dual licensed as above, without any
+additional terms or conditions.

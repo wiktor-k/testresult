@@ -2,12 +2,12 @@
 #![deny(missing_debug_implementations)]
 #![deny(missing_docs)]
 
-/// Error with stacktrace
+/// Error with a stacktrace
 ///
 /// Any other type of error can be converted to this one but the
 /// conversion will always panic.
 ///
-/// This type is useful only in the result of unit tests and cannot be instantiated.
+/// This type is useful only in unit tests and cannot be directly instantiated.
 #[derive(Debug)]
 #[doc(hidden)]
 pub enum TestError {}
@@ -25,13 +25,13 @@ impl<T: std::fmt::Display> From<T> for TestError {
 /// Unit test result
 ///
 /// This type allows panicking when encountering any type of
-/// failure. Thus it allows using `?` operator in unit tests but still
-/// get the complete stacktrace and exact place of failure during
+/// failure. Thus it allows using the `?` operator in unit tests but still
+/// getting the complete stacktrace and the exact place of a failure during
 /// tests.
 ///
 /// # Examples
 ///
-/// Using [`TestResult`] as a result of the test function:
+/// Using [`TestResult`] as a result of a test function:
 ///
 /// ```
 /// use testresult::TestResult;
@@ -47,6 +47,7 @@ impl<T: std::fmt::Display> From<T> for TestError {
 ///
 /// As [`TestResult`] is generic one can use it in test helper functions to return
 /// objects to test functions.
+///
 /// For example [`TestResult`] used in `rstest` fixture returns a [`std::fs::File`] object that
 /// can be used by the test:
 ///
