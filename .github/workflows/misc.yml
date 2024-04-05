@@ -1,0 +1,44 @@
+name: Misc
+
+on:
+  pull_request:
+  push:
+    tags:
+      - 'v*'
+    branches: [ main ]
+  workflow_dispatch:
+
+concurrency:
+  group: misc-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  code-coverage:
+    name: Code coverage
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Install code coverage tool
+        uses: actions-rs/install@v0.1
+        with:
+          crate: cargo-tarpaulin
+          version: latest
+      - name: Collect code coverage
+        run: cargo tarpaulin --out Xml
+      - name: Upload code coverage
+        uses: codecov/codecov-action@v2
+
+  valgrind:
+    name: Valgrind
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Install valgrind
+        run: sudo apt-get install valgrind
+      - name: Install cargo-valgrind
+        uses: actions-rs/install@v0.1
+        with:
+          crate: cargo-valgrind
+          version: latest
+      - name: Run valgrind tests
+        run: cargo valgrind test

@@ -1,6 +1,6 @@
 # Test result
 
-[![CI](https://github.com/wiktor-k/testresult/actions/workflows/ci.yml/badge.svg)](https://github.com/wiktor-k/testresult/actions/workflows/ci.yml)
+[![CI](https://github.com/wiktor-k/testresult/actions/workflows/rust.yml/badge.svg)](https://github.com/wiktor-k/testresult/actions/workflows/rust.yml)
 [![Crates.io](https://img.shields.io/crates/v/testresult)](https://crates.io/crates/testresult)
 [![Codecov](https://img.shields.io/codecov/c/gh/wiktor-k/testresult)](https://app.codecov.io/gh/wiktor-k/testresult)
 

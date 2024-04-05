@@ -52,8 +52,9 @@ impl<T: std::fmt::Display> From<T> for TestError {
 /// can be used by the test:
 ///
 /// ```
-/// use rstest::{fixture, rstest};
 /// use std::fs::File;
+///
+/// use rstest::{fixture, rstest};
 /// use testresult::TestResult;
 ///
 /// #[fixture]
@@ -73,8 +74,9 @@ pub type TestResult<T = ()> = std::result::Result<T, TestError>;
 
 #[cfg(test)]
 mod tests {
-    use super::*;
     use anyhow::Context as _;
+
+    use super::*;
 
     #[test]
     #[ignore] // ignored test must still compile
