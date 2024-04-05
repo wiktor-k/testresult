@@ -1,0 +1,17 @@
+[advisories]
+version = 2
+yanked = "deny"
+ignore = [
+]
+
+[bans]
+deny = [
+]
+multiple-versions = "allow"
+
+[licenses]
+version = 2
+allow = [
+  "Apache-2.0",
+  "MIT",
+]
