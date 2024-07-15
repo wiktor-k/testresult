@@ -25,7 +25,7 @@ impl<T: std::fmt::Display> From<T> for TestError {
     }
 }
 
-/// Unit test result
+/// Unit test result - always panics when an error occurs
 ///
 /// This type allows panicking when encountering any type of
 /// failure. Thus it allows using the `?` operator in unit tests but still
