@@ -4,12 +4,15 @@
 // the docs illustrate the usage in test functions
 #![allow(clippy::test_attr_in_doctest)]
 
-/// Error with a stacktrace
+/// Error, but one which immediately panics with a stacktrace
+///
+/// Usually used via [`TestResult`].
 ///
 /// Any other type of error can be converted to this one but the
 /// conversion will always panic.
 ///
-/// This type is useful only in unit tests and cannot be directly instantiated.
+/// This type is useful only in unit tests.
+/// It cannot be instantiated: no values of this type can ever exist.
 #[derive(Debug)]
 pub enum TestError {}
 
