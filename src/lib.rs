@@ -11,7 +11,6 @@
 ///
 /// This type is useful only in unit tests and cannot be directly instantiated.
 #[derive(Debug)]
-#[doc(hidden)]
 pub enum TestError {}
 
 impl<T: std::fmt::Display> From<T> for TestError {
