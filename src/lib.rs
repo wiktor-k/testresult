@@ -1,6 +1,8 @@
 #![doc = include_str!("../README.md")]
 #![deny(missing_debug_implementations)]
 #![deny(missing_docs)]
+// the docs illustrate the usage in test functions
+#![allow(clippy::test_attr_in_doctest)]
 
 /// Error with a stacktrace
 ///
@@ -21,7 +23,6 @@ impl<T: std::fmt::Display> From<T> for TestError {
     }
 }
 
-#[allow(clippy::test_attr_in_doctest)] // the docs illustrate the usage in test functions
 /// Unit test result
 ///
 /// This type allows panicking when encountering any type of
