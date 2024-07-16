@@ -4,14 +4,16 @@
 // the docs illustrate the usage in test functions
 #![allow(clippy::test_attr_in_doctest)]
 
-/// Error with a stacktrace
+/// Error, but one which immediately panics with a stacktrace
+///
+/// Usually used via [`TestResult`].
 ///
 /// Any other type of error can be converted to this one but the
 /// conversion will always panic.
 ///
-/// This type is useful only in unit tests and cannot be directly instantiated.
+/// This type is useful only in unit tests.
+/// It cannot be instantiated: no values of this type can ever exist.
 #[derive(Debug)]
-#[doc(hidden)]
 pub enum TestError {}
 
 impl<T: std::fmt::Display> From<T> for TestError {
@@ -23,7 +25,7 @@ impl<T: std::fmt::Display> From<T> for TestError {
     }
 }
 
-/// Unit test result
+/// Unit test result - always panics when an error occurs
 ///
 /// This type allows panicking when encountering any type of
 /// failure. Thus it allows using the `?` operator in unit tests but still
