@@ -4,7 +4,7 @@
 // the docs illustrate the usage in test functions
 #![allow(clippy::test_attr_in_doctest)]
 
-/// Error, but one which immediately panics with a stacktrace
+/// Error, but one which immediately panics with a stacktrace.
 ///
 /// Usually used via [`TestResult`].
 ///
@@ -25,7 +25,7 @@ impl<T: std::fmt::Display> From<T> for TestError {
     }
 }
 
-/// Unit test result - always panics when an error occurs
+/// Unit test result - always panics when an error occurs.
 ///
 /// This type allows panicking when encountering any type of
 /// failure. Thus it allows using the `?` operator in unit tests but still
