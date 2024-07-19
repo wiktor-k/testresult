@@ -1,6 +1,6 @@
 [package]
 name = "testresult"
-version = "0.4.0"
+version = "0.4.1"
 edition = "2021"
 authors = ["Wiktor Kwapisiewicz <wiktor@metacode.biz>"]
 description = "Provides TestResult type for concise and precise test failures"
