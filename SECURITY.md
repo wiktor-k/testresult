@@ -17,10 +17,9 @@ Please, report the vulnerability either through [new security advisory form][ADV
 [ADV]: https://github.com/wiktor-k/testresult/security/advisories/new
 
 Security contacts:
-  - [Wiktor Kwapisiewicz][WK], preferably encrypted with the following OpenPGP certificate: [`6539 09A2 F0E3 7C10 6F5F AF54 6C88 57E0 D8E8 F074`][KEY].
+  - [Wiktor Kwapisiewicz][WK].
 
 [WK]: https://github.com/wiktor-k
-[KEY]: https://keys.openpgp.org/vks/v1/by-fingerprint/653909A2F0E37C106F5FAF546C8857E0D8E8F074
 
 ## Supported Versions
 
