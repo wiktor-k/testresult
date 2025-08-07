@@ -14,4 +14,4 @@ exclude = [".github"]
 
 [dev-dependencies]
 anyhow = "1.0.86"
-rstest = "0.21.0"
+rstest = "0.26.0"
