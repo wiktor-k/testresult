@@ -1,5 +1,4 @@
 [advisories]
-version = 2
 yanked = "deny"
 ignore = [
 ]
@@ -10,7 +9,6 @@ deny = [
 multiple-versions = "allow"
 
 [licenses]
-version = 2
 allow = [
   "Apache-2.0",
   "MIT",
