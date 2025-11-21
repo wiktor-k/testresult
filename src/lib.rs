@@ -12,9 +12,10 @@
 /// conversion will always panic.
 ///
 /// This type is useful only in unit tests.
-/// It cannot be instantiated: no values of this type can ever exist.
+/// It effectively is never instantiated: no values of this type exist.
 #[derive(Debug)]
-pub enum TestError {}
+#[non_exhaustive]
+pub struct TestError {}
 
 impl<T: std::fmt::Display> From<T> for TestError {
     #[track_caller] // Will show the location of the caller in test failure messages
@@ -144,5 +145,12 @@ mod tests {
             err.downcast_ref::<String>()
         );
         Ok(())
+    }
+
+    #[test]
+    #[deny(unreachable_code)]
+    #[ignore = "the test always fail but we need it to compile and be lint-free"]
+    fn check_returning_err() -> TestResult {
+        Err("dummy error".into())
     }
 }
