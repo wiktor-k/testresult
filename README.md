@@ -92,6 +92,21 @@ For a more elaborate description see ["Improving failure messages in Rust tests 
 
 [IMPROV]: https://bluxte.net/musings/2023/01/08/improving_failure_messages_rust_tests/
 
+### Doctests
+
+Doctests can use the `ok(())` function call to enable better error reporting in doctests:
+
+```rust
+let mut temp_file = std::env::temp_dir();
+temp_file.push("file");
+
+std::fs::File::create(temp_file)?;
+
+testresult::ok(())
+```
+
+Prefixing the last line with `#` hides it in the generated documentation.
+
 ## License
 
 This project is licensed under either of:

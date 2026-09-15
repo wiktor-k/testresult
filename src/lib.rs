@@ -75,6 +75,43 @@ impl<T: std::fmt::Display> From<T> for TestError {
 /// ```
 pub type TestResult<T = ()> = std::result::Result<T, TestError>;
 
+/// Returns the value wrapped in the [`Ok` variant][TestResult::Ok] of [`TestResult`].
+///
+/// This is especially useful in doctests.
+/// When the final token is `(())` [`rustdoc` automatically wraps][0] the test in a function returning an error:
+///
+/// > Please note that you must write the `(())` in one sequence without intermediate whitespace so that
+/// > `rustdoc` understands you want an implicit `Result`-returning function.
+///
+/// # Examples
+///
+/// The final line of the doctest should include `testresult::ok(())` like so:
+///
+/// ```
+/// let mut temp_file = std::env::temp_dir();
+/// temp_file.push("file");
+///
+/// std::fs::File::create(temp_file)?;
+///
+/// testresult::ok(())
+/// ```
+///
+/// Prefixing that line with `#` makes the final function call invisible in the generated documentation:
+///
+/// ```
+/// let mut temp_file = std::env::temp_dir();
+/// temp_file.push("file");
+///
+/// std::fs::File::create(temp_file)?;
+///
+/// # testresult::ok(())
+/// ```
+///
+/// [0]: https://doc.rust-lang.org/rustdoc/write-documentation/documentation-tests.html#using--in-doc-tests
+pub fn ok<T>(value: T) -> TestResult<T> {
+    Ok(value)
+}
+
 #[cfg(test)]
 mod tests {
     use anyhow::Context as _;
