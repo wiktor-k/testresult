@@ -34,11 +34,10 @@ jobs:
     steps:
       - uses: actions/checkout@v7
       - name: Install valgrind
-        run: sudo apt-get install valgrind
+        run: sudo apt-get update && sudo apt-get install valgrind
+      - name: Install cargo-binstall
+        uses: cargo-bins/cargo-binstall@main
       - name: Install cargo-valgrind
-        uses: actions-rs/install@v0.1
-        with:
-          crate: cargo-valgrind
-          version: latest
+        run: cargo binstall cargo-valgrind
       - name: Run valgrind tests
         run: cargo valgrind test
