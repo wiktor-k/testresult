@@ -1,7 +1,7 @@
 #!/usr/bin/env -S just --working-directory . --justfile
 # Load project-specific properties from the `.env` file
 
-set dotenv-load := true
+set dotenv-load
 
 # Since this is a first recipe it's being run by default.
 # Faster checks need to be executed first for better UX.  For example
