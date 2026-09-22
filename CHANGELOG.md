@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+## v0.4.2
+
+- [Add `ok` helper function for doctests](https://github.com/wiktor-k/testresult/pull/19)
+
 ## v0.4.1
 
 - Expose `TestError` and make a couple of doc improvements. Thanks to @ijackson for implementing this change ([#14](https://github.com/wiktor-k/testresult/pull/14)).
